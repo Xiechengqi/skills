@@ -6,7 +6,7 @@ license: 完整条款见 LICENSE.txt
 
 # Web 应用程序测试
 
-要测试本地 Web 应用程序，请编写原生 Python Playwright 脚本。必须通过 CDP 连接到 `http://localhost:9222` 上已运行的 Chromium 浏览器，如果连接失败将直接中断执行。
+要测试本地 Web 应用程序，请编写原生 Python Playwright 脚本。必须通过 CDP 连接到 `http://localhost:9222` 上的 Chromium 浏览器，如果连接失败将直接中断执行。
 
 **可用的辅助脚本**：
 - `scripts/with_server.py` - 管理服务器生命周期（支持多个服务器）
@@ -21,7 +21,7 @@ license: 完整条款见 LICENSE.txt
     │         ├─ 成功 → 使用选择器编写 Playwright 脚本
     │         └─ 失败/不完整 → 视为动态（见下文）
     │
-    └─ 否（动态 webapp）→ 确保 Chromium 在 localhost:9222 上通过 CDP 运行
+    └─ 否（动态 webapp）→ 确保 Chromium 浏览器在 localhost:9222 上运行 CDP
             ├─ 是 → 侦察-执行模式：
             │        1. 连接到 CDP 端点
             │        2. 导航并等待 networkidle
@@ -68,8 +68,7 @@ with sync_playwright() as p:
         browser.close()
     except Exception as e:
         print(f"❌ 无法连接到 CDP 浏览器: {e}")
-        print("请确保已启动带 CDP 的 Chromium 浏览器：")
-        print("google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug")
+        print("请确保 Chromium 浏览器已在 http://localhost:9222 上运行 CDP")
         exit(1)
 ```
 
@@ -102,18 +101,8 @@ with sync_playwright() as p:
 
 ## CDP 连接要求
 
-**启动带 CDP 的 Chromium 浏览器（必须步骤）**：
-```bash
-# Linux/macOS
-google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug
-
-# Windows
-chrome.exe --remote-debugging-port=9222 --user-data-dir=C:\temp\chrome-debug
-```
-
-**连接要求**：
-- 必须预先启动 Chromium 浏览器并启用 CDP
-- 浏览器必须运行在 `http://localhost:9222`
+**前提条件**：
+- Chromium 浏览器已在 `http://localhost:9222` 上运行 CDP
 - 连接失败时脚本必须直接中断执行并给出明确提示
 - 自动化脚本会影响用户当前的浏览器状态和会话
 
