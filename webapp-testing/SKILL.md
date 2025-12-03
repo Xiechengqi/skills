@@ -8,12 +8,34 @@ license: 完整条款见 LICENSE.txt
 
 要测试本地 Web 应用程序，编写原生 Python Playwright 脚本。必须通过 CDP 连接到 `http://localhost:9222` 上的 Chromium 浏览器，如果连接失败将直接中断执行。
 
+## Python 环境设置
+
+使用 `uv` 工具管理 Python 环境和依赖：
+
+**环境初始化流程**：
+1. 检查当前目录是否存在 `.venv` 虚拟环境
+2. 如果不存在，使用 `uv venv` 创建虚拟环境
+3. 如果存在，直接在虚拟环境中运行
+
+**运行 Python 脚本**：
+```bash
+# uv 会自动检测并使用 .venv，如不存在会自动创建
+uv run script.py
+```
+
+**安装依赖**：
+```bash
+# 在虚拟环境中安装 Playwright
+uv pip install playwright
+uv run playwright install chromium
+```
+
 **可用的辅助脚本**：
 - `scripts/with_server.py` - 管理服务器生命周期（支持多个服务器）
 
 **始终先使用 `--help` 运行脚本**来查看用法。在尝试运行脚本之前，不要阅读源代码，除非发现确实需要定制化解决方案。这些脚本可能非常大，因此会污染上下文窗口。它们的存在是为了作为黑盒脚本直接调用，而不是被导入到上下文窗口中。
 
-## 决策树：选择您的方法
+## 决策树：选择方法
 
 ```
 用户任务 → 是否为静态 HTML？
@@ -38,15 +60,15 @@ license: 完整条款见 LICENSE.txt
 
 **单个服务器：**
 ```bash
-python scripts/with_server.py --server "npm run dev" --port 5173 -- python your_automation.py
+uv run scripts/with_server.py --server "npm run dev" --port 5173 -- uv run your_automation.py
 ```
 
 **多个服务器（例如：后端 + 前端）：**
 ```bash
-python scripts/with_server.py \
-  --server "cd backend && python server.py" --port 3000 \
+uv run scripts/with_server.py \
+  --server "cd backend && uv run server.py" --port 3000 \
   --server "cd frontend && npm run dev" --port 5173 \
-  -- python your_automation.py
+  -- uv run your_automation.py
 ```
 
 要创建自动化脚本，仅包含 Playwright 逻辑（服务器会自动管理）：
