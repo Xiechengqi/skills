@@ -27,7 +27,6 @@ uv run script.py
 ```bash
 # 在虚拟环境中安装 Playwright
 uv pip install playwright
-uv run playwright install chromium
 ```
 
 **可用的辅助脚本**：
