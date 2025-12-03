@@ -6,12 +6,12 @@ license: 完整条款见 LICENSE.txt
 
 # Web 应用程序测试
 
-要测试本地 Web 应用程序，请编写原生 Python Playwright 脚本。必须通过 CDP 连接到 `http://localhost:9222` 上的 Chromium 浏览器，如果连接失败将直接中断执行。
+要测试本地 Web 应用程序，编写原生 Python Playwright 脚本。必须通过 CDP 连接到 `http://localhost:9222` 上的 Chromium 浏览器，如果连接失败将直接中断执行。
 
 **可用的辅助脚本**：
 - `scripts/with_server.py` - 管理服务器生命周期（支持多个服务器）
 
-**始终先使用 `--help` 运行脚本**来查看用法。在尝试运行脚本之前，不要阅读源代码，除非发现确实需要定制化解决方案。这些脚本可能非常大，因此会污染您的上下文窗口。它们的存在是为了作为黑盒脚本直接调用，而不是被导入到您的上下文窗口中。
+**始终先使用 `--help` 运行脚本**来查看用法。在尝试运行脚本之前，不要阅读源代码，除非发现确实需要定制化解决方案。这些脚本可能非常大，因此会污染上下文窗口。它们的存在是为了作为黑盒脚本直接调用，而不是被导入到上下文窗口中。
 
 ## 决策树：选择您的方法
 
@@ -34,7 +34,7 @@ license: 完整条款见 LICENSE.txt
 
 ## 示例：使用 with_server.py
 
-要启动服务器，先运行 `--help`，然后使用辅助工具：
+要启动服务器，运行 `--help`，然后使用辅助工具：
 
 **单个服务器：**
 ```bash
@@ -63,7 +63,7 @@ with sync_playwright() as p:
         page = browser.new_page()
         page.goto('http://localhost:5173') # 服务器已运行并准备就绪
         page.wait_for_load_state('networkidle') # 关键：等待 JS 执行
-        # ... 您的自动化逻辑
+        # ... 自动化逻辑
         # 注意：不要关闭已连接的浏览器，只需断开连接
         browser.close()
     except Exception as e:
@@ -114,7 +114,7 @@ with sync_playwright() as p:
 
 ## 参考文件
 
-- **examples/** - 显示常见模式的示例：
+- **references/** - 显示常见模式的示例：
   - `element_discovery.py` - 发现页面上的按钮、链接和输入
   - `static_html_automation.py` - 对本地 HTML 使用 file:// URL
   - `console_logging.py` - 在自动化期间捕获控制台日志
